@@ -3,7 +3,7 @@ import { Infiniteloading,Button,Dialog } from '@nutui/nutui-react'
 import './demo.css';
 import {get} from './api/request'
 function Demo() {
-    const [defultList, setDefultList] = useState([])
+    const [refreshList, setRefreshList] = useState([])
     const [refreshHasMore, setRefreshHasMore] = useState(true)
 
     useEffect(() => {
@@ -13,32 +13,33 @@ function Demo() {
         init()
     }, [])
 
-    const refreshLoadMore = (done) => {
-        setTimeout(() => {
-            const curLen = defultList.length
-            for (let i = curLen; i < curLen + 10; i++) {
-                defultList.push(`${i}`)
-            }
-            if (defultList.length >= 30) {
-                setRefreshHasMore(false)
-            } else {
-                setDefultList([...defultList])
-            }
-            done()
-        }, 500)
-    }
     const refresh = (done)=>{
       setTimeout(()=>{
           done()
       },500)
     }
 
-    const init = () => {
+    const refreshLoadMore = (done) => {
+        setTimeout(() => {
+          const curLen = refreshList.length
+          for (let i = curLen; i < curLen + 10; i++) {
+            refreshList.push(`${i}`)
+          }
+          if (refreshList.length >= 30) {
+            setRefreshHasMore(false)
+          } else {
+            setRefreshList([...refreshList])
+          }
+          done()
+        }, 500)
+      }
+      
+      const init = () => {
         for (let i = 0; i < 10; i++) {
-            defultList.push(`${i}`)
+          refreshList.push(`${i}`)
         }
-        setDefultList([...defultList])
-    }
+        setRefreshList([...refreshList])
+      }
     return (
         <div className="nutui-demo">
             <ul className="infiniteUl" id="refreshScroll">
@@ -51,7 +52,7 @@ function Demo() {
                 loadMore={refreshLoadMore}
                 refresh={refresh}
                 >
-                    {defultList.map((item, index) => {
+                    {refreshList.map((item, index) => {
                         return (
                             <li className="infiniteLi" key={index}>
                                 {item}
